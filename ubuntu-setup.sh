@@ -6,6 +6,7 @@ APT_GET_INSTALL="sudo apt-get install "
 PIP_INSTALL="pip install "
 
 PROMPT_STR="[Y/n]"
+SEPARATOR_STR="--------------------------------------------------------------------------------------------"
 
 update_packages()
 {
@@ -30,7 +31,6 @@ install_git()
 {
     echo "Install git? $PROMPT_STR"
     read to_install_git
-
 
     if [ $to_install_git == "Y" ] || [ $to_install_git == "y" ]
     then
@@ -88,7 +88,6 @@ install_python_tools()
                 echo "[$i] Installing ${tools[$i]} ..."
                 yes | $APT_GET_INSTALL ${tools[$i]}
         done
-
     else
         echo "Skipping python and supporting tools installation ..."
     fi
@@ -124,29 +123,75 @@ install_cpp_tools()
     fi
 }
 
+install_java()
+{
+    echo "Install java? $PROMPT_STR"
+    read to_install_java
+
+    if [ $to_install_java == "Y" ] || [ $to_install_java == "y" ]
+    then
+        java_tools=("openjdk-17-jdk" "openjdk-17-jre")
+
+        for i in ${!java_tools[@]}; do
+            echo "[$i] Installing ${java_tools[$i]} ..."
+            yes | $APT_GET_INSTALL ${java_tools[$i]}
+            echo "[$i] Done."
+        done
+    else
+        echo "Skipping java installation ..."
+    fi
+}
+
+install_misc()
+{
+    misc_tools=("gnome-tweaks" "curl" "zsh")
+
+    for i in ${!misc_tools[@]}; do
+        echo "Install ${misc_tools[$i]} $PROMPT_STR?"
+        read to_install
+
+        if [ $to_install == "Y" ] || [ $to_install == "y" ]
+        then
+            yes | $APT_GET_INSTALL ${misc_tools[$i]}
+            echo "Done."
+        else
+            echo "Skipping ${misc_tools[$i]} installation ..."
+        fi
+    echo $SEPARATOR_STR
+    done
+}
+
+echo $SEPARATOR_STR
+echo "  _   _   _                       _                     ____           _                   "
+echo " | | | | | |__    _   _   _ __   | |_   _   _          / ___|    ___  | |_   _   _   _ __  "
+echo " | | | | | '_ \  | | | | | '_ \  | __| | | | |  _____  \___ \   / _ \ | __| | | | | | '_ \ "
+echo " | |_| | | |_) | | |_| | | | | | | |_  | |_| | |_____|  ___) | |  __/ | |_  | |_| | | |_) |"
+echo "  \___/  |_.__/   \__,_| |_| |_|  \__|  \__,_|         |____/   \___|  \__|  \__,_| | .__/ "
+echo "                                                                                    |_|    "
+echo $SEPARATOR_STR
 echo "Hello $USER!"
 echo "You are about to setup your ubuntu dev environment."
+echo $SEPARATOR_STR
 
 update_packages
+echo $SEPARATOR_STR
+
 install_python_tools
+echo $SEPARATOR_STR
+
 install_git
+echo $SEPARATOR_STR
+
 install_vscode
+echo $SEPARATOR_STR
+
 install_cpp_tools
+echo $SEPARATOR_STR
 
-# install gnome-tweaks
+install_java
+echo $SEPARATOR_STR
 
-# install curl
-
-# install zsh
-
-# install java
-
-# setup ssh keys
-
-# setup git
-
-# setup bash aliases
-
-# setup zsh
+install_misc
 
 echo "Environment set!"
+echo $SEPARATOR_STR
