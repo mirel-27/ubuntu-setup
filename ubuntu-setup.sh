@@ -17,10 +17,12 @@ update_packages()
     if [ $to_update_packages == "Y" ] || [ $to_update_packages == "y" ]
     then
         echo "Updating packages ..."
+        echo ""
 
         yes | $APT_GET_UPDATE
         yes | $APT_GET_UPGRADE
 
+        echo ""
         echo "Done."
     else
         echo "Skipping packages update ..."
@@ -35,9 +37,11 @@ install_git()
     if [ $to_install_git == "Y" ] || [ $to_install_git == "y" ]
     then
         echo "Installing git ..."
+        echo ""
 
         yes | $APT_GET_INSTALL git
 
+        echo ""
         echo "Done."
     else
         echo "Skipping git installation ..."
@@ -52,6 +56,7 @@ install_vscode()
     if [ $to_install_vscode == "Y" ] || [ $to_install_vscode == "y" ]
     then
         echo "Installing vscode ..."
+        echo ""
 
         # install the apt repository and signing key to enable auto-updating using the system's package manager
         # https://code.visualstudio.com/docs/setup/linux
@@ -68,6 +73,7 @@ install_vscode()
         sudo apt update
         $APT_GET_INSTALL code
 
+        echo ""
         echo "Done."
     else
         echo "Skipping vscode installation ..."
@@ -82,12 +88,18 @@ install_python_tools()
     if [ $to_install_python_tools == "Y" ] || [ $to_install_python_tools == "y" ]
     then
         echo "Installing python and tools ..."
+        echo ""
+
         tools=("python3" "python3-pip")
 
         for i in ${!tools[@]}; do
-                echo "[$i] Installing ${tools[$i]} ..."
-                yes | $APT_GET_INSTALL ${tools[$i]}
+            echo "[$i] Installing ${tools[$i]} ..."
+            yes | $APT_GET_INSTALL ${tools[$i]}
+            echo "[$i] Done."
+            echo ""
         done
+
+        echo "Done."
     else
         echo "Skipping python and supporting tools installation ..."
     fi
@@ -101,20 +113,26 @@ install_cpp_tools()
     if [ $to_install_cpp_tools == "Y" ] || [ $to_install_cpp_tools == "y" ]
     then
         echo "Installing C++ and tools ..."
+        echo ""
 
         apt_tools=("build-essential" "gcc-9" "gcc-10" "g++-9" "g++-10" "valgrind" "cmake" "cmake-doc" "cppcheck" "clang-format" "astyle")
 
         for i in ${!apt_tools[@]}; do
-                echo "[$i] Installing ${apt_tools[$i]} ..."
-                        yes | $APT_GET_INSTALL ${apt_tools[$i]}
-                echo "[$i] Done."
+            echo "[$i] Installing ${apt_tools[$i]} ..."
+                yes | $APT_GET_INSTALL ${apt_tools[$i]}
+            echo "[$i] Done."
+            echo ""
         done
 
         pip_tools=("conan")
-            for i in ${!pip_tools[@]}; do
-            echo "[$i] Installing ${pip_tools[$i]} ..."
-                    yes | $PIP_INSTALL ${pip_tools[$i]}
-            echo "[$i] Done."
+        for i in ${!pip_tools[@]}; do
+            index=$(($i+${#apt_tools[@]}))
+
+            echo "[$index] Installing ${pip_tools[$i]} ..."
+            yes | $PIP_INSTALL ${pip_tools[$i]}
+
+            echo "[$index] Done."
+            echo ""
         done
 
         echo "Done."
@@ -130,13 +148,19 @@ install_java()
 
     if [ $to_install_java == "Y" ] || [ $to_install_java == "y" ]
     then
+        echo "Installing java ..."
+        echo ""
+
         java_tools=("openjdk-17-jdk" "openjdk-17-jre")
 
         for i in ${!java_tools[@]}; do
             echo "[$i] Installing ${java_tools[$i]} ..."
             yes | $APT_GET_INSTALL ${java_tools[$i]}
             echo "[$i] Done."
+            echo ""
         done
+
+        echo "Done."
     else
         echo "Skipping java installation ..."
     fi
@@ -152,7 +176,12 @@ install_misc()
 
         if [ $to_install == "Y" ] || [ $to_install == "y" ]
         then
+            echo "Installing ${misc_tools[$i]} ..."
+            echo ""
+
             yes | $APT_GET_INSTALL ${misc_tools[$i]}
+            
+            echo ""
             echo "Done."
         else
             echo "Skipping ${misc_tools[$i]} installation ..."
