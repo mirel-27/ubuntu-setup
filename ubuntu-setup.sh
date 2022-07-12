@@ -190,6 +190,20 @@ install_misc()
     done
 }
 
+install_ubuntu_customizations()
+{
+    echo "Install Ubuntu 22.04 customizations?"
+    read to_install_customizations
+
+    if [ $to_install_customizations == "Y" ] || [ $to_install_customizations == "y" ]
+    then
+        echo "Installing customizations ..."
+        # TBD
+    else
+        echo "Skipping customizations installation ..."
+    fi
+}
+
 echo $SEPARATOR_STR
 echo "  _   _   _                       _                     ____           _                   "
 echo " | | | | | |__    _   _   _ __   | |_   _   _          / ___|    ___  | |_   _   _   _ __  "
@@ -221,6 +235,8 @@ install_java
 echo $SEPARATOR_STR
 
 install_misc
+
+install_ubuntu_customizations
 
 echo "Environment set!"
 echo $SEPARATOR_STR
