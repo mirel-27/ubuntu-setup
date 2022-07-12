@@ -33,7 +33,7 @@ Installed by the script with python tools bundle.
   - astyle
   - conan
 - Java
-  - openjdk 17 JDK
+  - openjdk-17 JDK
   - openjdk-17 JRE
 - Misc
   - gnome-tweaks
@@ -43,5 +43,6 @@ Installed by the script with python tools bundle.
 
 ## Usage
 
-`sudo ./ubuntu-setup.sh`
-
+```sh
+sudo ./ubuntu-setup.sh
+```
