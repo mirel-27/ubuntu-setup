@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#TODO: replace apt-get with apt
+APT_ADD_REPO="sudo add-apt-repository "
 APT_GET_UPDATE="sudo apt-get update"
 APT_GET_UPGRADE="sudo apt-get upgrade"
 APT_GET_INSTALL="sudo apt-get install "
@@ -70,7 +72,7 @@ install_vscode()
         # update and install
 
         $APT_GET_INSTALL apt-transport-https
-        sudo apt update
+        sudo apt update # TODO: update this line
         $APT_GET_INSTALL code
 
         echo ""
@@ -143,12 +145,12 @@ install_cpp_tools()
 
 install_java()
 {
-    echo "Install java? $PROMPT_STR"
+    echo "Install Java? $PROMPT_STR"
     read to_install_java
 
     if [ $to_install_java == "Y" ] || [ $to_install_java == "y" ]
     then
-        echo "Installing java ..."
+        echo "Installing Java ..."
         echo ""
 
         java_tools=("openjdk-17-jdk" "openjdk-17-jre")
@@ -162,7 +164,28 @@ install_java()
 
         echo "Done."
     else
-        echo "Skipping java installation ..."
+        echo "Skipping Java installation ..."
+    fi
+}
+
+install_android_studio()
+{
+    echo "Install Android Studio? $PROMPT_STR"
+    read to_install_android
+
+    if [ $to_install_android = "Y" ] || [ $to_install_android == "y"]
+    then
+        echo "Installing Android Studio"
+        echo ""
+
+        yes | $APT_ADD_REPO "ppa:maarten-fonville/android-studio"
+        yes | $APT_GET_UPDATE
+        yes | $APT_GET_INSTALL "android-studio"
+
+        echo ""
+        echo "Done."
+    else
+        echo "Skipping Android Studio installation ..."
     fi
 }
 
@@ -232,6 +255,9 @@ install_cpp_tools
 echo $SEPARATOR_STR
 
 install_java
+echo $SEPARATOR_STR
+
+install_android_studio
 echo $SEPARATOR_STR
 
 install_misc
