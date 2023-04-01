@@ -173,7 +173,7 @@ install_android_studio()
     echo "Install Android Studio? $PROMPT_STR"
     read to_install_android
 
-    if [ $to_install_android = "Y" ] || [ $to_install_android == "y"]
+    if [ $to_install_android == "Y" ] || [ $to_install_android == "y" ]
     then
         echo "Installing Android Studio"
         echo ""
@@ -186,6 +186,26 @@ install_android_studio()
         echo "Done."
     else
         echo "Skipping Android Studio installation ..."
+    fi
+}
+
+install_web_stuff()
+{
+    echo "Install web tools ?" $PROMPT_STR;
+    read to_install_web_tools
+
+    if [ $to_install_web_tools = "Y" ] || [ $to_install_web_tools == y]
+    then
+        web_tools=("npm")
+
+        for i in ${!web_tools[@]}; do
+            echo "[$i] Installing ${web_tools[$i]} ..."
+            yes | $APT_GET_INSTALL ${web_tools[$i]}
+            echo "[$i] Done."
+            echo ""
+        done
+    else
+        echo "Skipping web tools installation"
     fi
 }
 
@@ -211,20 +231,6 @@ install_misc()
         fi
     echo $SEPARATOR_STR
     done
-}
-
-install_ubuntu_customizations()
-{
-    echo "Install Ubuntu 22.04 customizations?"
-    read to_install_customizations
-
-    if [ $to_install_customizations == "Y" ] || [ $to_install_customizations == "y" ]
-    then
-        echo "Installing customizations ..."
-        # TBD
-    else
-        echo "Skipping customizations installation ..."
-    fi
 }
 
 echo $SEPARATOR_STR
@@ -260,9 +266,10 @@ echo $SEPARATOR_STR
 install_android_studio
 echo $SEPARATOR_STR
 
-install_misc
+install_web_stuff
+echo $SEPARATOR_STR
 
-install_ubuntu_customizations
+install_misc
 
 echo "Environment set!"
 echo $SEPARATOR_STR
