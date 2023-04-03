@@ -196,7 +196,10 @@ install_web_stuff()
 
     if [ $to_install_web_tools = "Y" ] || [ $to_install_web_tools == y]
     then
-        web_tools=("npm")
+        # Add nodejs 18 repository
+        curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+
+        web_tools=("npm" "nodejs")
 
         for i in ${!web_tools[@]}; do
             echo "[$i] Installing ${web_tools[$i]} ..."
