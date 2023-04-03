@@ -43,6 +43,11 @@ install_git()
 
         yes | $APT_GET_INSTALL git
 
+        git config --global alias.st status
+        git config --global alias.br branch
+        git config --global alias.co checkout
+        git config --global alias.lo 'log --oneline'
+
         echo ""
         echo "Done."
     else
